@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h3>Order Bot</h3>
+
+Power:
+<select id="power">
+  <option>-1.00</option>
+  <option>-1.50</option>
+  <option>-2.00</option>
+  <option>-2.50</option>
+  <option>-3.00</option>
+</select>
+
+Qty:
+<input type="number" id="qty" value="1">
+
+<button onclick="runBot()">ORDER</button>
+
+<script>
+function runBot() {
+  const power = document.getElementById("power").value;
+  const qty = document.getElementById("qty").value;
+
+  localStorage.setItem("Power", power);
+  localStorage.setItem("Qty", qty);
+
+  alert("Saved: " + power + " / " + qty);
+}
+</script>
+
+</body>
+</html>
