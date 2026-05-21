@@ -1,34 +1,645 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <title>SE Calculator</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .eye-grid {
+      display: flex;
+      gap: 20px;
+    }
+
+    .eye-box {
+      flex: 1;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    h4 { margin: 0 0 10px 0; }
+
+    input, select, button {
+      padding: 8px;
+      margin: 5px 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button { cursor: pointer; }
+
+    .result-box {
+      margin-top: 10px;
+      padding: 10px;
+      border-top: 1px solid #eee;
+    }
+
+    .label { font-weight: bold; }
+
+    .top-controls {
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    th {
+      background: #f5f5f5;
+    }
+  </style>
+</head>
+
 <body>
 
-<h3>Order Bot</h3>
+<h3>Multi-focal Contact Lens Helper</h3>
 
-Power:
-<select id="power">
-  <option>-1.00</option>
-  <option>-1.50</option>
-  <option>-2.00</option>
-  <option>-2.50</option>
-  <option>-3.00</option>
-</select>
+<div class="eye-grid">
 
-Qty:
-<input type="number" id="qty" value="1">
+  <div class="eye-box">
+    <h4>Right Eye</h4>
 
-<button onclick="runBot()">ORDER</button>
+    <div style="display:flex; gap:10px;">
+      <div style="flex:1;">
+        Sphere:
+        <input id="od_s" type="text">
+      </div>
+
+      <div style="flex:1;">
+        Cyl:
+        <input id="od_c" type="text">
+      </div>
+    </div>
+
+    <div class="result-box">
+      <span class="label">SE: </span><span id="od_se">-</span>
+      <button type="button" onclick="setDominant('od')" id="dom_od">Dominant</button>
+    </div>
+  </div>
+
+  <div class="eye-box">
+    <h4>Left Eye</h4>
+
+    <div style="display:flex; gap:10px;">
+      <div style="flex:1;">
+        Sphere:
+        <input id="os_s" type="text">
+      </div>
+
+      <div style="flex:1;">
+        Cyl:
+        <input id="os_c" type="text">
+      </div>
+    </div>
+
+    <div class="result-box">
+      <span class="label">SE: </span><span id="os_se">-</span>
+      <button type="button" onclick="setDominant('os')" id="dom_os">Dominant</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="top-controls">
+
+  <div style="flex:1;">
+    <label>Mode</label>
+    <select id="mode">
+      <option value="spec">Spectacle</option>
+      <option value="cl">Contact Lens</option>
+    </select>
+  </div>
+
+  <div style="flex:1;">
+    <label>Current Add</label>
+    <select id="add">
+      <option value="low">0 to +1.25</option>
+      <option value="mid">+1.50 to +2.25</option>
+      <option value="high">+2.50 and above</option>
+    </select>
+  </div>
+
+  <div style="flex:0.6;">
+    <button onclick="calculateSE()">Calculate</button>
+  </div>
+
+</div>
+
+<!-- STATIC TABLE -->
+<table>
+  <thead>
+    <tr>
+      <th style="max-width:10px">No.</th>
+      <th style="width:150px">Right RX</th>
+      <th style="width:150px">Left RX</th>
+      <th>Δ</th>
+      <th>Far Rating</th>
+      <th>Near Rating</th>
+    </tr>
+  </thead>
+
+<tbody>
+
+  <!-- ROW 1 BASELINE -->
+  <tr>
+    <td>1</td>
+    <td id="r1_od">-</td>
+    <td id="r1_os">-</td>
+    <td>+0.00 // +0.00</td>
+    <td>
+      <select id="r1_far">
+        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+      </select>
+    </td>
+    <td>
+      <select id="r1_near">
+        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+      </select>
+    </td>
+  </tr>
+
+  <!-- ROW 2 +0.25 / +0.00 -->
+  <tr>
+    <td>2</td>
+    <td id="r2_od">-</td>
+    <td id="r2_os">-</td>
+    <td>+0.25 // +0.00</td>
+    <td>
+      <select id="r2_far">
+        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+      </select>
+    </td>
+    <td>
+      <select id="r2_near">
+        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+      </select>
+    </td>
+  </tr>
+
+  <!-- ROW 3 +0.00 / +0.25 -->
+  <tr>
+    <td>3</td>
+    <td id="r3_od">-</td>
+    <td id="r3_os">-</td>
+    <td>+0.00 // +0.25</td>
+    <td>
+      <select id="r3_far">
+        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+      </select>
+    </td>
+    <td>
+      <select id="r3_near">
+        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+      </select>
+    </td>
+  </tr>
+
+  <!-- ROW 4 +0.25 / +0.25 -->
+  <tr>
+    <td>4</td>
+    <td id="r4_od">-</td>
+    <td id="r4_os">-</td>
+    <td>+0.25 // +0.25</td>
+    <td>
+      <select id="r4_far">
+        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+      </select>
+    </td>
+    <td>
+      <select id="r4_near">
+        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+      </select>
+    </td>
+  </tr>
+
+  <!-- ROW 5 +0.50 / +0.25 -->
+  <tr>
+    <td>5</td>
+    <td id="r5_od">-</td>
+    <td id="r5_os">-</td>
+    <td>+0.50 // +0.25</td>
+    <td>
+      <select id="r5_far">
+        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+      </select>
+    </td>
+    <td>
+      <select id="r5_near">
+        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+      </select>
+    </td>
+  </tr>
+
+  <!-- ROW 6 +0.25 / +0.50 -->
+  <tr>
+    <td>6</td>
+    <td id="r6_od">-</td>
+    <td id="r6_os">-</td>
+    <td>+0.25 // +0.50</td>
+    <td>
+      <select id="r6_far">
+        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+      </select>
+    </td>
+    <td>
+      <select id="r6_near">
+        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+      </select>
+    </td>
+  </tr>
+
+  <!-- ROW 7 +0.50 / +0.50 -->
+  <tr>
+    <td>7</td>
+    <td id="r7_od">-</td>
+    <td id="r7_os">-</td>
+    <td>+0.50 // +0.50</td>
+    <td>
+      <select id="r7_far">
+        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+      </select>
+    </td>
+    <td>
+      <select id="r7_near">
+        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+      </select>
+    </td>
+  </tr>
+
+
+<!-- ROW 8 -->
+<tr>
+  <td>8</td>
+  <td id="r8_od">-</td>
+  <td id="r8_os">-</td>
+  <td>-0.25 // -0.00</td>
+  <td>
+    <select id="r8_far">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+  <td>
+    <select id="r8_near">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+</tr>
+
+<!-- ROW 9 -->
+<tr>
+  <td>9</td>
+  <td id="r9_od">-</td>
+  <td id="r9_os">-</td>
+  <td>-0.00 // -0.25</td>
+  <td>
+    <select id="r9_far">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+  <td>
+    <select id="r9_near">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+</tr>
+
+<!-- ROW 10 -->
+<tr>
+  <td>10</td>
+  <td id="r10_od">-</td>
+  <td id="r10_os">-</td>
+  <td>-0.25 // -0.25</td>
+  <td>
+    <select id="r10_far">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+  <td>
+    <select id="r10_near">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+</tr>
+
+<!-- ROW 11 -->
+<tr>
+  <td>11</td>
+  <td id="r11_od">-</td>
+  <td id="r11_os">-</td>
+  <td>-0.00 -add // -0.00</td>
+  <td>
+    <select id="r11_far">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+  <td>
+    <select id="r11_near">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+</tr>
+
+<!-- ROW 12 -->
+<tr>
+  <td>12</td>
+  <td id="r12_od">-</td>
+  <td id="r12_os">-</td>
+  <td>-0.00 // -0.00 -add</td>
+  <td>
+    <select id="r12_far">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+  <td>
+    <select id="r12_near">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+</tr>
+
+<!-- ROW 13 -->
+<tr>
+  <td>13</td>
+  <td id="r13_od">-</td>
+  <td id="r13_os">-</td>
+  <td>-0.00 -add // -0.25</td>
+  <td>
+    <select id="r13_far">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+  <td>
+    <select id="r13_near">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+</tr>
+
+<!-- ROW 14 -->
+<tr>
+  <td>14</td>
+  <td id="r14_od">-</td>
+  <td id="r14_os">-</td>
+  <td>-0.25 // -0.00 -add</td>
+  <td>
+    <select id="r14_far">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+  <td>
+    <select id="r14_near">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+</tr>
+
+<!-- ROW 15 -->
+<tr>
+  <td>15</td>
+  <td id="r15_od">-</td>
+  <td id="r15_os">-</td>
+  <td>-0.25 -add // -0.25</td>
+  <td>
+    <select id="r15_far">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+  <td>
+    <select id="r15_near">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+</tr>
+
+<!-- ROW 16 -->
+<tr>
+  <td>16</td>
+  <td id="r16_od">-</td>
+  <td id="r16_os">-</td>
+  <td>-0.25 // -0.25 -add</td>
+  <td>
+    <select id="r16_far">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+  <td>
+    <select id="r16_near">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+</tr>
+
+
+
+
+
+
+
+
+</tbody>
+</table>
 
 <script>
-function runBot() {
-  const power = document.getElementById("power").value;
-  const qty = document.getElementById("qty").value;
 
-  localStorage.setItem("Power", power);
-  localStorage.setItem("Qty", qty);
+const rowOffsets = [
+  { od: 0.00, os: 0.00 },
+  { od: 0.25, os: 0.00 },
+  { od: 0.00, os: 0.25 },
+  { od: 0.25, os: 0.25 },
+  { od: 0.50, os: 0.25 },
+  { od: 0.25, os: 0.50 },
+  { od: 0.50, os: 0.50 }
+];
 
-  alert("Saved: " + power + " / " + qty);
+let dominantEye = null;
+const BVD = 0.012;
+
+/* ---------------- CORE ---------------- */
+
+function setDominant(eye) {
+  dominantEye = eye;
+  document.getElementById("dom_od").style.opacity = eye === "od" ? "1" : "0.3";
+  document.getElementById("dom_os").style.opacity = eye === "os" ? "1" : "0.3";
 }
-</script>
 
+function formatPower(v) {
+  return (v >= 0 ? "+" : "") + v.toFixed(2);
+}
+
+function roundToQuarter(v) {
+  return Math.round(v * 4) / 4;
+}
+
+function vertexConvert(F, d) {
+  return F / (1 - d * F);
+}
+
+function getSE(m1, m2) {
+  return (m1 + m2) / 2;
+}
+
+function cleanInput(v) {
+  let n = parseFloat(String(v).replace("+", ""));
+  return isNaN(n) ? 0 : n;
+}
+
+function processEye(sphere, cyl, mode) {
+  let flat, steep;
+
+  if (mode === "cl") {
+    flat = sphere;
+    steep = sphere + cyl;
+  } else {
+    flat = vertexConvert(sphere, BVD);
+    steep = vertexConvert(sphere + cyl, BVD);
+  }
+
+  return roundToQuarter(getSE(flat, steep));
+}
+
+/* ---------------- ADD SYSTEM ---------------- */
+
+function getAddLevel() {
+  const v = document.getElementById("add").value;
+  if (v === "high") return 2;
+  if (v === "mid") return 1;
+  return 0;
+}
+
+function labelFromLevel(level) {
+  if (level === 2) return "Hi";
+  if (level === 1) return "Mi";
+  return "Lo";
+}
+
+function degradeAdd(level) {
+  if (level === 2) return 1;   // Hi → Mi
+  if (level === 1) return 0;   // Mi → Lo
+  return -1;                   // Lo → blank
+}
+
+/* ---------------- MAIN ENGINE ---------------- */
+
+function calculateSE() {
+
+  const mode = document.getElementById("mode").value;
+
+  const od_s = cleanInput(document.getElementById("od_s").value);
+  const od_c = cleanInput(document.getElementById("od_c").value);
+  const os_s = cleanInput(document.getElementById("os_s").value);
+  const os_c = cleanInput(document.getElementById("os_c").value);
+
+  const baseOD = processEye(od_s, od_c, mode);
+  const baseOS = processEye(os_s, os_c, mode);
+
+  const baseAdd = getAddLevel();
+
+  for (let i = 1; i <= 16; i++) {
+
+    let odVal = baseOD;
+    let osVal = baseOS;
+
+    /* ---------------- NEAR (1–7) ---------------- */
+    if (i <= 7) {
+      odVal += rowOffsets[i - 1].od;
+      osVal += rowOffsets[i - 1].os;
+    }
+
+    /* ---------------- FAR (8–16) ---------------- */
+    if (i === 8)  { odVal += -0.25; osVal += 0.00; }
+    if (i === 9)  { odVal += 0.00;  osVal += -0.25; }
+    if (i === 10) { odVal += -0.25; osVal += -0.25; }
+
+    if (i === 11) { odVal += 0.00; osVal += 0.00; }
+    if (i === 12) { odVal += 0.00; osVal += 0.00; }
+    if (i === 13) { odVal += 0.00; osVal += -0.25; }
+    if (i === 14) { odVal += -0.25; osVal += 0.00; }
+    if (i === 15) { odVal += -0.25; osVal += -0.25; }
+    if (i === 16) { odVal += -0.25; osVal += -0.25; }
+
+    /* ---------------- ADD LOGIC ---------------- */
+
+    let odAddLevel = baseAdd;
+    let osAddLevel = baseAdd;
+
+    if (i === 11 || i === 13 || i === 15) {
+      odAddLevel = degradeAdd(odAddLevel);
+    }
+
+    if (i === 12 || i === 14 || i === 16) {
+      osAddLevel = degradeAdd(osAddLevel);
+    }
+
+    const odAdd = odAddLevel === -1 ? "" : labelFromLevel(odAddLevel);
+    const osAdd = osAddLevel === -1 ? "" : labelFromLevel(osAddLevel);
+
+    /* ---------------- OUTPUT ---------------- */
+
+    document.getElementById(`r${i}_od`).textContent =
+      `${formatPower(odVal)}${odAdd ? " " + odAdd : ""}`;
+
+    document.getElementById(`r${i}_os`).textContent =
+      `${formatPower(osVal)}${osAdd ? " " + osAdd : ""}`;
+  }
+
+  document.getElementById("od_se").textContent = formatPower(baseOD);
+  document.getElementById("os_se").textContent = formatPower(baseOS);
+}
+
+</script>
 </body>
 </html>
