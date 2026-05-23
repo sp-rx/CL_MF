@@ -152,8 +152,9 @@
   <thead>
     <tr>
       <th style="max-width:10px">No.</th>
-      <th style="width:150px">Right RX</th>
-      <th style="width:150px">Left RX</th>
+	<th style="max-width:30px">Function</th>
+      <th style="width:100px">Right RX</th>
+      <th style="width:100px">Left RX</th>
       <th>Δ</th>
       <th>Far Rating</th>
       <th>Near Rating</th>
@@ -165,6 +166,7 @@
   <!-- ROW 1 BASELINE -->
   <tr>
     <td>1</td>
+	<td>Base</td>
     <td id="r1_od">-</td>
     <td id="r1_os">-</td>
     <td>+0.00 // +0.00</td>
@@ -185,6 +187,8 @@
   <!-- ROW 2 +0.25 / +0.00 -->
   <tr>
     <td>2</td>
+	<td>Improve near</td>
+
     <td id="r2_od">-</td>
     <td id="r2_os">-</td>
     <td>+0.25 // +0.00</td>
@@ -205,6 +209,8 @@
   <!-- ROW 3 +0.00 / +0.25 -->
   <tr>
     <td>3</td>
+	<td>Improve near</td>
+
     <td id="r3_od">-</td>
     <td id="r3_os">-</td>
     <td>+0.00 // +0.25</td>
@@ -225,6 +231,8 @@
   <!-- ROW 4 +0.25 / +0.25 -->
   <tr>
     <td>4</td>
+	<td>Improve near</td>
+
     <td id="r4_od">-</td>
     <td id="r4_os">-</td>
     <td>+0.25 // +0.25</td>
@@ -245,6 +253,8 @@
   <!-- ROW 5 +0.50 / +0.25 -->
   <tr>
     <td>5</td>
+	<td>Improve near</td>
+
     <td id="r5_od">-</td>
     <td id="r5_os">-</td>
     <td>+0.50 // +0.25</td>
@@ -265,6 +275,8 @@
   <!-- ROW 6 +0.25 / +0.50 -->
   <tr>
     <td>6</td>
+	<td>Improve near</td>
+
     <td id="r6_od">-</td>
     <td id="r6_os">-</td>
     <td>+0.25 // +0.50</td>
@@ -285,6 +297,8 @@
   <!-- ROW 7 +0.50 / +0.50 -->
   <tr>
     <td>7</td>
+	<td>Improve near</td>
+
     <td id="r7_od">-</td>
     <td id="r7_os">-</td>
     <td>+0.50 // +0.50</td>
@@ -306,6 +320,8 @@
 <!-- ROW 8 -->
 <tr>
   <td>8</td>
+	<td>Improve far</td>
+
   <td id="r8_od">-</td>
   <td id="r8_os">-</td>
   <td>-0.25 // -0.00</td>
@@ -326,6 +342,8 @@
 <!-- ROW 9 -->
 <tr>
   <td>9</td>
+	<td>Improve far</td>
+
   <td id="r9_od">-</td>
   <td id="r9_os">-</td>
   <td>-0.00 // -0.25</td>
@@ -346,6 +364,7 @@
 <!-- ROW 10 -->
 <tr>
   <td>10</td>
+	<td>Improve far</td>
   <td id="r10_od">-</td>
   <td id="r10_os">-</td>
   <td>-0.25 // -0.25</td>
@@ -366,6 +385,8 @@
 <!-- ROW 11 -->
 <tr>
   <td>11</td>
+	<td>Improve far</td>
+
   <td id="r11_od">-</td>
   <td id="r11_os">-</td>
   <td>-0.00 -add // -0.00</td>
@@ -386,6 +407,8 @@
 <!-- ROW 12 -->
 <tr>
   <td>12</td>
+	<td>Improve far</td>
+
   <td id="r12_od">-</td>
   <td id="r12_os">-</td>
   <td>-0.00 // -0.00 -add</td>
@@ -406,6 +429,7 @@
 <!-- ROW 13 -->
 <tr>
   <td>13</td>
+	<td>Improve far</td>
   <td id="r13_od">-</td>
   <td id="r13_os">-</td>
   <td>-0.00 -add // -0.25</td>
@@ -426,6 +450,8 @@
 <!-- ROW 14 -->
 <tr>
   <td>14</td>
+	<td>Improve far</td>
+
   <td id="r14_od">-</td>
   <td id="r14_os">-</td>
   <td>-0.25 // -0.00 -add</td>
@@ -446,6 +472,8 @@
 <!-- ROW 15 -->
 <tr>
   <td>15</td>
+	<td>Improve far</td>
+
   <td id="r15_od">-</td>
   <td id="r15_os">-</td>
   <td>-0.25 -add // -0.25</td>
@@ -466,6 +494,8 @@
 <!-- ROW 16 -->
 <tr>
   <td>16</td>
+	<td>Improve far</td>
+
   <td id="r16_od">-</td>
   <td id="r16_os">-</td>
   <td>-0.25 // -0.25 -add</td>
@@ -483,7 +513,71 @@
   </td>
 </tr>
 
+<!-- ROW 17 -->
+<tr>
+  <td>17</td>
+  <td>Improve Near</td>
 
+  <td id="r17_od">-</td>
+  <td id="r17_os">-</td>
+  <td>+0.00 +add // +0.00 +add</td>
+  <td>
+    <select id="r17_far">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+  <td>
+    <select id="r17_near">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+</tr>
+
+<!-- ROW 18 -->
+<tr>
+  <td>18</td>
+  <td>Improve Near</td>
+
+  <td id="r18_od">-</td>
+  <td id="r18_os">-</td>
+  <td>+0.00 // +0.00 +add</td>
+  <td>
+    <select id="r18_far">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+  <td>
+    <select id="r18_near">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+</tr>
+
+<!-- ROW 19 -->
+<tr>
+  <td>19</td>
+  <td>Improve Near</td>
+
+  <td id="r19_od">-</td>
+  <td id="r19_os">-</td>
+  <td>+0.00 +add // +0.00</td>
+  <td>
+    <select id="r19_far">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+  <td>
+    <select id="r19_near">
+      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </td>
+</tr>
 
 
 
@@ -572,6 +666,13 @@ function degradeAdd(level) {
   return -1;                   // Lo → blank
 }
 
+function increaseAdd(level) {
+  if (level === 2) return 2; // Hi stays Hi
+  if (level === 1) return 2; // Mi → Hi
+  if (level === 0) return 1; // Lo → Mi
+  return 0;                  // none → Lo
+}
+
 /* ---------------- MAIN ENGINE ---------------- */
 
 function calculateSE() {
@@ -588,8 +689,7 @@ function calculateSE() {
 
   const baseAdd = getAddLevel();
 
-  for (let i = 1; i <= 16; i++) {
-
+for (let i = 1; i <= 19; i++) {
     let odVal = baseOD;
     let osVal = baseOS;
 
@@ -613,16 +713,30 @@ function calculateSE() {
 
     /* ---------------- ADD LOGIC ---------------- */
 
-    let odAddLevel = baseAdd;
-    let osAddLevel = baseAdd;
+let odAddLevel = baseAdd;
+let osAddLevel = baseAdd;
 
-    if (i === 11 || i === 13 || i === 15) {
-      odAddLevel = degradeAdd(odAddLevel);
-    }
+// rows 11–16 (decrease logic)
+if (i === 11 || i === 13 || i === 15) odAddLevel = degradeAdd(odAddLevel);
+if (i === 12 || i === 14 || i === 16) osAddLevel = degradeAdd(osAddLevel);
 
-    if (i === 12 || i === 14 || i === 16) {
-      osAddLevel = degradeAdd(osAddLevel);
-    }
+// rows 17–19 (increase logic)
+if (i >= 17) {
+  if (i === 17) {
+    odAddLevel = increaseAdd(baseAdd);
+    osAddLevel = increaseAdd(baseAdd);
+  }
+
+  if (i === 18) {
+    odAddLevel = baseAdd;
+    osAddLevel = increaseAdd(baseAdd);
+  }
+
+  if (i === 19) {
+    odAddLevel = increaseAdd(baseAdd);
+    osAddLevel = baseAdd;
+  }
+}
 
     const odAdd = odAddLevel === -1 ? "" : labelFromLevel(odAddLevel);
     const osAdd = osAddLevel === -1 ? "" : labelFromLevel(osAddLevel);
