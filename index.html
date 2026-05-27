@@ -3,757 +3,275 @@
 <head>
   <title>SE Calculator</title>
 
-  <style>
-    body {
-      font-family: Arial;
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
-    }
 
-    .eye-grid {
-      display: flex;
-      gap: 20px;
-    }
+<style>
+:root{
+  --font-sans:Arial,sans-serif;
+  --font-mono:Consolas,monospace;
 
-    .eye-box {
-      flex: 1;
-      border: 1px solid #ddd;
-      padding: 15px;
-      border-radius: 10px;
-    }
+  --color-text-primary:#111;
+  --color-text-secondary:#666;
+  --color-text-tertiary:#999;
 
-    h4 { margin: 0 0 10px 0; }
+  --color-background-primary:#fff;
+  --color-background-secondary:#f7f7f7;
+  --color-background-tertiary:#ececec;
 
-    input, select, button {
-      padding: 8px;
-      margin: 5px 0;
-      width: 100%;
-      box-sizing: border-box;
-    }
+  --color-border-primary:#999;
+  --color-border-secondary:#ccc;
+  --color-border-tertiary:#e5e5e5;
 
-    button { cursor: pointer; }
+  --border-radius-md:8px;
+  --border-radius-lg:14px;
+}
 
-    .result-box {
-      margin-top: 10px;
-      padding: 10px;
-      border-top: 1px solid #eee;
-    }
 
-    .label { font-weight: bold; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);color:var(--color-text-primary);font-size:13px}
+.page{padding:1.5rem 0;max-width:85%; margin:auto}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:16px}
+.eye-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.eye-label{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.eye-dot{width:8px;height:8px;border-radius:50%}
+.eye-dot.od{background:#378ADD}
+.eye-dot.os{background:#1D9E75}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.field-wrap{display:flex;flex-direction:column;gap:3px}
+.field-label{font-size:11px;color:var(--color-text-tertiary)}
+input{width:100%;padding:7px 9px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px;font-family:var(--font-mono)}
+input:focus{outline:none;border-color:var(--color-border-primary)}
+.se-line{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:0.5px solid var(--color-border-tertiary)}
+.se-val{font-size:15px;font-weight:500;font-family:var(--font-mono)}
+.dom-btn{font-size:11px;padding:3px 10px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:transparent;cursor:pointer;color:var(--color-text-tertiary);display:flex;align-items:center;gap:4px}
+.dom-btn.active-od{background:#E6F1FB;color:#0C447C;border-color:#85B7EB}
+.dom-btn.active-os{background:#E1F5EE;color:#085041;border-color:#5DCAA5}
+.controls-row{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;margin-bottom:16px}
+.field-wrap select{width:100%;padding:7px 9px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px;cursor:pointer}
+.calc-btn{padding:8px 20px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap}
+.calc-btn:hover{background:var(--color-background-secondary)}
+.calc-btn:active{transform:scale(0.98)}
+.choice-section{display:none;margin-bottom:16px}
+.choice-section.visible{display:block}
+.choice-label{font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice-btn{padding:12px 16px;border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);cursor:pointer;text-align:left}
+.choice-btn:hover{background:var(--color-background-secondary)}
+.choice-btn.active-near{border:1.5px solid #5DCAA5;background:#E1F5EE}
+.choice-btn.active-far{border:1.5px solid #85B7EB;background:#E6F1FB}
+.choice-icon{font-size:18px;margin-bottom:4px}
+.choice-main{font-size:13px;font-weight:500}
+.choice-main.near{color:#085041}
+.choice-main.far{color:#0C447C}
+.choice-sub{font-size:11px;color:var(--color-text-tertiary);margin-top:2px}
+.reset-btn{display:none;font-size:12px;color:var(--color-text-secondary);background:none;border:none;cursor:pointer;padding:0;margin-top:8px;text-decoration:underline}
+.reset-btn.visible{display:inline}
+.tbl-wrap{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th{background:var(--color-background-secondary);font-size:11px;font-weight:500;color:var(--color-text-secondary);padding:8px 10px;text-align:left;border-bottom:0.5px solid var(--color-border-tertiary)}
+th.center,td.center{text-align:center}
+td{padding:8px 10px;font-size:12px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr.base-row td{background:var(--color-background-secondary)}
+.row-num{color:var(--color-text-tertiary);font-size:11px}
+.fn-badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500}
+.fn-badge.near{background:#E1F5EE;color:#085041}
+.fn-badge.far{background:#E6F1FB;color:#0C447C}
+.fn-badge.base{background:var(--color-background-tertiary);color:var(--color-text-secondary)}
+.rx-val{font-family:var(--font-mono);font-size:12px}
+.delta-val{font-size:11px;color:var(--color-text);font-family:var(--font-mono)}
+select.rating{width:60px;padding:4px 4px;font-size:11px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer}
+</style>
 
-    .top-controls {
-      margin-top: 20px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 15px;
-      display: flex;
-      gap: 20px;
-      align-items: flex-end;
-      flex-wrap: wrap;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: center;
-      font-size: 13px;
-    }
-
-    th {
-      background: #f5f5f5;
-    }
-  </style>
-</head>
-
-<body>
-
-<h3>Multi-focal Contact Lens Helper</h3>
+<div class="page">
 
 <div class="eye-grid">
-
-  <div class="eye-box">
-    <h4>Right Eye</h4>
-
-    <div style="display:flex; gap:10px;">
-      <div style="flex:1;">
-        Sphere:
-        <input id="od_s" type="text">
-      </div>
-
-      <div style="flex:1;">
-        Cyl:
-        <input id="od_c" type="text">
-      </div>
+  <div class="card">
+    <div class="eye-label"><span class="eye-dot od"></span> Right eye (OD)</div>
+    <div class="field-row">
+      <div class="field-wrap"><span class="field-label">Sphere</span><input id="od_s" type="text" placeholder="+0.00"></div>
+      <div class="field-wrap"><span class="field-label">Cylinder</span><input id="od_c" type="text" placeholder="-0.00"></div>
     </div>
-
-    <div class="result-box">
-      <span class="label">SE: </span><span id="od_se">-</span>
-      <button type="button" onclick="setDominant('od')" id="dom_od">Dominant</button>
+    <div class="se-line">
+      <span style="color:var(--color-text-secondary);font-size:12px">SE <span class="se-val" id="od_se">—</span></span>
+      <button class="dom-btn" id="dom_od" onclick="setDominant('od')"><i class="ti ti-eye" aria-hidden="true" style="font-size:11px"></i>Dominant</button>
     </div>
   </div>
-
-  <div class="eye-box">
-    <h4>Left Eye</h4>
-
-    <div style="display:flex; gap:10px;">
-      <div style="flex:1;">
-        Sphere:
-        <input id="os_s" type="text">
-      </div>
-
-      <div style="flex:1;">
-        Cyl:
-        <input id="os_c" type="text">
-      </div>
+  <div class="card">
+    <div class="eye-label"><span class="eye-dot os"></span> Left eye (OS)</div>
+    <div class="field-row">
+      <div class="field-wrap"><span class="field-label">Sphere</span><input id="os_s" type="text" placeholder="+0.00"></div>
+      <div class="field-wrap"><span class="field-label">Cylinder</span><input id="os_c" type="text" placeholder="-0.00"></div>
     </div>
-
-    <div class="result-box">
-      <span class="label">SE: </span><span id="os_se">-</span>
-      <button type="button" onclick="setDominant('os')" id="dom_os">Dominant</button>
+    <div class="se-line">
+      <span style="color:var(--color-text-secondary);font-size:12px">SE <span class="se-val" id="os_se">—</span></span>
+      <button class="dom-btn" id="dom_os" onclick="setDominant('os')"><i class="ti ti-eye" aria-hidden="true" style="font-size:11px"></i>Dominant</button>
     </div>
   </div>
-
 </div>
 
-<div class="top-controls">
-
-  <div style="flex:1;">
-    <label>Mode</label>
-    <select id="mode">
-      <option value="spec">Spectacle</option>
-      <option value="cl">Contact Lens</option>
-    </select>
+<div class="controls-row">
+  <div class="field-wrap"><span class="field-label">Rx mode</span>
+    <select id="mode"><option value="spec">Spectacle</option><option value="cl">Contact lens</option></select>
   </div>
-
-  <div style="flex:1;">
-    <label>Current Add</label>
-    <select id="add">
-      <option value="low">0 to +1.25</option>
-      <option value="mid">+1.50 to +2.25</option>
-      <option value="high">+2.50 and above</option>
-    </select>
+  <div class="field-wrap"><span class="field-label">Current add</span>
+    <select id="add"><option value="low">Low — 0 to +1.25</option><option value="mid">Mid — +1.50 to +2.25</option><option value="high">High — +2.50 and above</option></select>
   </div>
-
-  <div style="flex:0.6;">
-    <button onclick="calculateSE()">Calculate</button>
-  </div>
-
+  <button class="calc-btn" onclick="calculateSE()"><i class="ti ti-calculator" aria-hidden="true" style="font-size:13px;margin-right:5px"></i>Calculate</button>
 </div>
 
-<!-- STATIC TABLE -->
+<div class="choice-section" id="choiceSection">
+  <div class="choice-label">How is the patient doing?</div>
+  <div class="choice-grid">
+    <button class="choice-btn" id="btn_near" onclick="showRows('near')">
+      <div class="choice-icon"><i class="ti ti-zoom-in" aria-hidden="true" style="color:#1D9E75"></i></div>
+      <div class="choice-main near">Improve near</div>
+      <div class="choice-sub">Near vision is insufficient</div>
+    </button>
+    <button class="choice-btn" id="btn_far" onclick="showRows('far')">
+      <div class="choice-icon"><i class="ti ti-zoom-out" aria-hidden="true" style="color:#378ADD"></i></div>
+      <div class="choice-main far">Improve far</div>
+      <div class="choice-sub">Distance vision is blurred</div>
+    </button>
+  </div>
+  <button class="reset-btn" id="resetBtn" onclick="resetChoice()"><i class="ti ti-rotate-clockwise" style="font-size:11px;margin-right:3px"></i>Show all rows</button>
+</div>
+
+<div class="tbl-wrap">
 <table>
   <thead>
     <tr>
-      <th style="max-width:10px">No.</th>
-	<th style="max-width:30px">Function</th>
-      <th style="width:100px">Right RX</th>
-      <th style="width:100px">Left RX</th>
-      <th>Δ</th>
-      <th>Far Rating</th>
-      <th>Near Rating</th>
+      <th style="width:32px">#</th>
+      <th style="width:100px"></th>
+      <th style="width:92px">Right RX</th>
+      <th style="width:92px">Left RX</th>
+      <th>Delta</th>
+      <th class="center" style="width:68px">Far</th>
+      <th class="center" style="width:68px">Near</th>
     </tr>
   </thead>
-
-<tbody>
-
-  <!-- ROW 1 BASELINE -->
-  <tr>
-    <td>1</td>
-	<td>Base</td>
-    <td id="r1_od">-</td>
-    <td id="r1_os">-</td>
-    <td>+0.00 // +0.00</td>
-    <td>
-      <select id="r1_far">
-        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-      </select>
-    </td>
-    <td>
-      <select id="r1_near">
-        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-      </select>
-    </td>
-  </tr>
-
-  <!-- ROW 2 +0.25 / +0.00 -->
-  <tr>
-    <td>2</td>
-	<td>Improve near</td>
-
-    <td id="r2_od">-</td>
-    <td id="r2_os">-</td>
-    <td>+0.25 // +0.00</td>
-    <td>
-      <select id="r2_far">
-        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-      </select>
-    </td>
-    <td>
-      <select id="r2_near">
-        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-      </select>
-    </td>
-  </tr>
-
-  <!-- ROW 3 +0.00 / +0.25 -->
-  <tr>
-    <td>3</td>
-	<td>Improve near</td>
-
-    <td id="r3_od">-</td>
-    <td id="r3_os">-</td>
-    <td>+0.00 // +0.25</td>
-    <td>
-      <select id="r3_far">
-        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-      </select>
-    </td>
-    <td>
-      <select id="r3_near">
-        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-      </select>
-    </td>
-  </tr>
-
-  <!-- ROW 4 +0.25 / +0.25 -->
-  <tr>
-    <td>4</td>
-	<td>Improve near</td>
-
-    <td id="r4_od">-</td>
-    <td id="r4_os">-</td>
-    <td>+0.25 // +0.25</td>
-    <td>
-      <select id="r4_far">
-        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-      </select>
-    </td>
-    <td>
-      <select id="r4_near">
-        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-      </select>
-    </td>
-  </tr>
-
-  <!-- ROW 5 +0.50 / +0.25 -->
-  <tr>
-    <td>5</td>
-	<td>Improve near</td>
-
-    <td id="r5_od">-</td>
-    <td id="r5_os">-</td>
-    <td>+0.50 // +0.25</td>
-    <td>
-      <select id="r5_far">
-        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-      </select>
-    </td>
-    <td>
-      <select id="r5_near">
-        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-      </select>
-    </td>
-  </tr>
-
-  <!-- ROW 6 +0.25 / +0.50 -->
-  <tr>
-    <td>6</td>
-	<td>Improve near</td>
-
-    <td id="r6_od">-</td>
-    <td id="r6_os">-</td>
-    <td>+0.25 // +0.50</td>
-    <td>
-      <select id="r6_far">
-        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-      </select>
-    </td>
-    <td>
-      <select id="r6_near">
-        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-      </select>
-    </td>
-  </tr>
-
-  <!-- ROW 7 +0.50 / +0.50 -->
-  <tr>
-    <td>7</td>
-	<td>Improve near</td>
-
-    <td id="r7_od">-</td>
-    <td id="r7_os">-</td>
-    <td>+0.50 // +0.50</td>
-    <td>
-      <select id="r7_far">
-        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-      </select>
-    </td>
-    <td>
-      <select id="r7_near">
-        <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-      </select>
-    </td>
-  </tr>
-
-
-<!-- ROW 8 -->
-<tr>
-  <td>8</td>
-	<td>Improve far</td>
-
-  <td id="r8_od">-</td>
-  <td id="r8_os">-</td>
-  <td>-0.25 // -0.00</td>
-  <td>
-    <select id="r8_far">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-  <td>
-    <select id="r8_near">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-</tr>
-
-<!-- ROW 9 -->
-<tr>
-  <td>9</td>
-	<td>Improve far</td>
-
-  <td id="r9_od">-</td>
-  <td id="r9_os">-</td>
-  <td>-0.00 // -0.25</td>
-  <td>
-    <select id="r9_far">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-  <td>
-    <select id="r9_near">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-</tr>
-
-<!-- ROW 10 -->
-<tr>
-  <td>10</td>
-	<td>Improve far</td>
-  <td id="r10_od">-</td>
-  <td id="r10_os">-</td>
-  <td>-0.25 // -0.25</td>
-  <td>
-    <select id="r10_far">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-  <td>
-    <select id="r10_near">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-</tr>
-
-<!-- ROW 11 -->
-<tr>
-  <td>11</td>
-	<td>Improve far</td>
-
-  <td id="r11_od">-</td>
-  <td id="r11_os">-</td>
-  <td>-0.00 -add // -0.00</td>
-  <td>
-    <select id="r11_far">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-  <td>
-    <select id="r11_near">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-</tr>
-
-<!-- ROW 12 -->
-<tr>
-  <td>12</td>
-	<td>Improve far</td>
-
-  <td id="r12_od">-</td>
-  <td id="r12_os">-</td>
-  <td>-0.00 // -0.00 -add</td>
-  <td>
-    <select id="r12_far">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-  <td>
-    <select id="r12_near">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-</tr>
-
-<!-- ROW 13 -->
-<tr>
-  <td>13</td>
-	<td>Improve far</td>
-  <td id="r13_od">-</td>
-  <td id="r13_os">-</td>
-  <td>-0.00 -add // -0.25</td>
-  <td>
-    <select id="r13_far">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-  <td>
-    <select id="r13_near">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-</tr>
-
-<!-- ROW 14 -->
-<tr>
-  <td>14</td>
-	<td>Improve far</td>
-
-  <td id="r14_od">-</td>
-  <td id="r14_os">-</td>
-  <td>-0.25 // -0.00 -add</td>
-  <td>
-    <select id="r14_far">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-  <td>
-    <select id="r14_near">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-</tr>
-
-<!-- ROW 15 -->
-<tr>
-  <td>15</td>
-	<td>Improve far</td>
-
-  <td id="r15_od">-</td>
-  <td id="r15_os">-</td>
-  <td>-0.25 -add // -0.25</td>
-  <td>
-    <select id="r15_far">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-  <td>
-    <select id="r15_near">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-</tr>
-
-<!-- ROW 16 -->
-<tr>
-  <td>16</td>
-	<td>Improve far</td>
-
-  <td id="r16_od">-</td>
-  <td id="r16_os">-</td>
-  <td>-0.25 // -0.25 -add</td>
-  <td>
-    <select id="r16_far">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-  <td>
-    <select id="r16_near">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-</tr>
-
-<!-- ROW 17 -->
-<tr>
-  <td>17</td>
-  <td>Improve Near</td>
-
-  <td id="r17_od">-</td>
-  <td id="r17_os">-</td>
-  <td>+0.00 +add // +0.00 +add</td>
-  <td>
-    <select id="r17_far">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-  <td>
-    <select id="r17_near">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-</tr>
-
-<!-- ROW 18 -->
-<tr>
-  <td>18</td>
-  <td>Improve Near</td>
-
-  <td id="r18_od">-</td>
-  <td id="r18_os">-</td>
-  <td>+0.00 // +0.00 +add</td>
-  <td>
-    <select id="r18_far">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-  <td>
-    <select id="r18_near">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-</tr>
-
-<!-- ROW 19 -->
-<tr>
-  <td>19</td>
-  <td>Improve Near</td>
-
-  <td id="r19_od">-</td>
-  <td id="r19_os">-</td>
-  <td>+0.00 +add // +0.00</td>
-  <td>
-    <select id="r19_far">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-  <td>
-    <select id="r19_near">
-      <option value="na">N/A</option><option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-    </select>
-  </td>
-</tr>
-
-
-
-
-
-
-</tbody>
+  <tbody id="tableBody"></tbody>
 </table>
+</div>
+
+</div>
 
 <script>
+const rowDefs=[
+  {id:0,  fn:"Base",  group:"base", delta:"BASE +0.00 // +0.00",           od:0,    os:0,    addOD:0,  addOS:0,  domHide:null},
+  {id:1,  fn:"near",  group:"near", delta:"NEAR:1 +0.25 // +0.25",           od:.25,  os:.25,  addOD:0,  addOS:0,  domHide:null},
+    {id:2, fn:"near",  group:"near", delta:"NEAR:2 +0.00 +add // +0.00",      od:0,    os:0,    addOD:+1, addOS:0,  domHide:"od"},
+  {id:3, fn:"near",  group:"near", delta:"NEAR:2 +0.00 // +0.00 +add",      od:0,    os:0,    addOD:0,  addOS:+1, domHide:"os"},
+{id:4, fn:"near",  group:"near", delta:"NEAR:3 +0.00 +add // +0.00 +add", od:0,    os:0,    addOD:+1, addOS:+1, domHide:null},
+  {id:5, fn:"far",   group:"far",  delta:"FAR:1 -0.25 // -0.25",           od:-.25, os:-.25, addOD:0,  addOS:0,  domHide:null},
+  {id:6, fn:"far",   group:"far",  delta:"FAR:2 -0.00 -add // -0.00",      od:0,    os:0,    addOD:-1, addOS:0,  domHide:"os"},
+  {id:7, fn:"far",   group:"far",  delta:"FAR:2 -0.00 // -0.00 -add",      od:0,    os:0,    addOD:0,  addOS:-1, domHide:"od"},
+  {id:8, fn:"far",  group:"far", delta:"FAR:3 +0.25 -add // +0.25 -add",      od:+.25,    os:+.25,    addOD:-1, addOS:-1,  domHide:"null"},
 
-const rowOffsets = [
-  { od: 0.00, os: 0.00 },
-  { od: 0.25, os: 0.00 },
-  { od: 0.00, os: 0.25 },
-  { od: 0.25, os: 0.25 },
-  { od: 0.50, os: 0.25 },
-  { od: 0.25, os: 0.50 },
-  { od: 0.50, os: 0.50 }
 ];
 
-let dominantEye = null;
-const BVD = 0.012;
+const ratingOpts='<option value="na">—</option>'+[1,2,3,4,5,6,7,8,9].map(n=>`<option>${n}</option>`).join('');
+const tbody=document.getElementById('tableBody');
 
-/* ---------------- CORE ---------------- */
+rowDefs.forEach(r=>{
+  const tr=document.createElement('tr');
+  tr.id=`row_${r.id}`;
+  if(r.group==='base') tr.className='base-row';
+  const bc=r.group==='base'?'base':r.fn==='near'?'near':'far';
+  const bl=r.group==='base'?'Baseline':r.fn==='near'?'Improve near':'Improve far';
+  tr.innerHTML=`<td class="row-num center">${r.id}</td><td><span class="fn-badge ${bc}">${bl}</span></td><td><span class="rx-val" id="r${r.id}_od">—</span></td><td><span class="rx-val" id="r${r.id}_os">—</span></td><td><span class="delta-val">${r.delta}</span></td><td class="center"><select class="rating" id="r${r.id}_far">${ratingOpts}</select></td><td class="center"><select class="rating" id="r${r.id}_near">${ratingOpts}</select></td>`;
+  tbody.appendChild(tr);
+});
 
-function setDominant(eye) {
-  dominantEye = eye;
-  document.getElementById("dom_od").style.opacity = eye === "od" ? "1" : "0.3";
-  document.getElementById("dom_os").style.opacity = eye === "os" ? "1" : "0.3";
+let dominantEye=null;
+let activeGroup=null;
+const BVD=0.012;
+
+function setDominant(eye){
+  dominantEye=dominantEye===eye?null:eye;
+  document.getElementById('dom_od').className='dom-btn'+(dominantEye==='od'?' active-od':'');
+  document.getElementById('dom_os').className='dom-btn'+(dominantEye==='os'?' active-os':'');
+  applyVisibility();
 }
 
-function formatPower(v) {
-  return (v >= 0 ? "+" : "") + v.toFixed(2);
+function fmt(v){return(v>=0?'+':'')+v.toFixed(2)}
+function roundQ(v){return Math.round(v*4)/4}
+function vc(F,d){return F/(1-d*F)}
+function clean(v){let n=parseFloat(String(v).replace('+',''));return isNaN(n)?0:n}
+
+function processEye(s,c,mode){
+  let flat=mode==='cl'?s:vc(s,BVD);
+  let steep=mode==='cl'?s+c:vc(s+c,BVD);
+  return roundQ((flat+steep)/2);
 }
 
-function roundToQuarter(v) {
-  return Math.round(v * 4) / 4;
+function getAddLevel(){
+  const v=document.getElementById('add').value;
+  return v==='high'?2:v==='mid'?1:0;
 }
 
-function vertexConvert(F, d) {
-  return F / (1 - d * F);
+function labelFromLevel(l){return l===2?'Hi':l===1?'Med':l===0?'Lo':''}
+
+function applyAddDelta(base,delta){
+  if(delta===0) return base;
+  if(delta===+1) return base===2?2:base+1;
+  if(delta===-1) return base===0?-1:base-1;
+  return base;
 }
 
-function getSE(m1, m2) {
-  return (m1 + m2) / 2;
+function applyVisibility(){
+  rowDefs.forEach(r=>{
+    const tr=document.getElementById(`row_${r.id}`);
+    const hiddenByGroup = activeGroup!==null && r.group!=='base' && r.group!==activeGroup;
+    const hiddenByDom   = dominantEye!==null && r.domHide===dominantEye;
+    tr.style.display=(hiddenByGroup||hiddenByDom)?'none':'';
+  });
 }
 
-function cleanInput(v) {
-  let n = parseFloat(String(v).replace("+", ""));
-  return isNaN(n) ? 0 : n;
+function calculateSE(){
+  const mode=document.getElementById('mode').value;
+  const baseOD=processEye(clean(document.getElementById('od_s').value),clean(document.getElementById('od_c').value),mode);
+  const baseOS=processEye(clean(document.getElementById('os_s').value),clean(document.getElementById('os_c').value),mode);
+  const baseAdd=getAddLevel();
+
+  document.getElementById('od_se').textContent=fmt(baseOD);
+  document.getElementById('os_se').textContent=fmt(baseOS);
+
+  rowDefs.forEach(r=>{
+    const odVal=baseOD+r.od;
+    const osVal=baseOS+r.os;
+    const odAddLevel=applyAddDelta(baseAdd,r.addOD);
+    const osAddLevel=applyAddDelta(baseAdd,r.addOS);
+    const odAdd=odAddLevel===-1?'':labelFromLevel(odAddLevel);
+    const osAdd=osAddLevel===-1?'':labelFromLevel(osAddLevel);
+    document.getElementById(`r${r.id}_od`).textContent=`${fmt(odVal)}${odAdd?' '+odAdd:''}`;
+    document.getElementById(`r${r.id}_os`).textContent=`${fmt(osVal)}${osAdd?' '+osAdd:''}`;
+  });
+
+  document.getElementById('choiceSection').classList.add('visible');
+  activeGroup=null;
+  document.getElementById('btn_near').className='choice-btn';
+  document.getElementById('btn_far').className='choice-btn';
+  document.getElementById('resetBtn').classList.remove('visible');
+  applyVisibility();
 }
 
-function processEye(sphere, cyl, mode) {
-  let flat, steep;
-
-  if (mode === "cl") {
-    flat = sphere;
-    steep = sphere + cyl;
-  } else {
-    flat = vertexConvert(sphere, BVD);
-    steep = vertexConvert(sphere + cyl, BVD);
-  }
-
-  return roundToQuarter(getSE(flat, steep));
+function showRows(group){
+  activeGroup=group;
+  document.getElementById('btn_near').className='choice-btn'+(group==='near'?' active-near':'');
+  document.getElementById('btn_far').className='choice-btn'+(group==='far'?' active-far':'');
+  document.getElementById('resetBtn').classList.add('visible');
+  applyVisibility();
 }
 
-/* ---------------- ADD SYSTEM ---------------- */
-
-function getAddLevel() {
-  const v = document.getElementById("add").value;
-  if (v === "high") return 2;
-  if (v === "mid") return 1;
-  return 0;
+function resetChoice(){
+  activeGroup=null;
+  document.getElementById('btn_near').className='choice-btn';
+  document.getElementById('btn_far').className='choice-btn';
+  document.getElementById('resetBtn').classList.remove('visible');
+  applyVisibility();
 }
-
-function labelFromLevel(level) {
-  if (level === 2) return "Hi";
-  if (level === 1) return "Mi";
-  return "Lo";
-}
-
-function degradeAdd(level) {
-  if (level === 2) return 1;   // Hi → Mi
-  if (level === 1) return 0;   // Mi → Lo
-  return -1;                   // Lo → blank
-}
-
-function increaseAdd(level) {
-  if (level === 2) return 2; // Hi stays Hi
-  if (level === 1) return 2; // Mi → Hi
-  if (level === 0) return 1; // Lo → Mi
-  return 0;                  // none → Lo
-}
-
-/* ---------------- MAIN ENGINE ---------------- */
-
-function calculateSE() {
-
-  const mode = document.getElementById("mode").value;
-
-  const od_s = cleanInput(document.getElementById("od_s").value);
-  const od_c = cleanInput(document.getElementById("od_c").value);
-  const os_s = cleanInput(document.getElementById("os_s").value);
-  const os_c = cleanInput(document.getElementById("os_c").value);
-
-  const baseOD = processEye(od_s, od_c, mode);
-  const baseOS = processEye(os_s, os_c, mode);
-
-  const baseAdd = getAddLevel();
-
-for (let i = 1; i <= 19; i++) {
-    let odVal = baseOD;
-    let osVal = baseOS;
-
-    /* ---------------- NEAR (1–7) ---------------- */
-    if (i <= 7) {
-      odVal += rowOffsets[i - 1].od;
-      osVal += rowOffsets[i - 1].os;
-    }
-
-    /* ---------------- FAR (8–16) ---------------- */
-    if (i === 8)  { odVal += -0.25; osVal += 0.00; }
-    if (i === 9)  { odVal += 0.00;  osVal += -0.25; }
-    if (i === 10) { odVal += -0.25; osVal += -0.25; }
-
-    if (i === 11) { odVal += 0.00; osVal += 0.00; }
-    if (i === 12) { odVal += 0.00; osVal += 0.00; }
-    if (i === 13) { odVal += 0.00; osVal += -0.25; }
-    if (i === 14) { odVal += -0.25; osVal += 0.00; }
-    if (i === 15) { odVal += -0.25; osVal += -0.25; }
-    if (i === 16) { odVal += -0.25; osVal += -0.25; }
-
-    /* ---------------- ADD LOGIC ---------------- */
-
-let odAddLevel = baseAdd;
-let osAddLevel = baseAdd;
-
-// rows 11–16 (decrease logic)
-if (i === 11 || i === 13 || i === 15) odAddLevel = degradeAdd(odAddLevel);
-if (i === 12 || i === 14 || i === 16) osAddLevel = degradeAdd(osAddLevel);
-
-// rows 17–19 (increase logic)
-if (i >= 17) {
-  if (i === 17) {
-    odAddLevel = increaseAdd(baseAdd);
-    osAddLevel = increaseAdd(baseAdd);
-  }
-
-  if (i === 18) {
-    odAddLevel = baseAdd;
-    osAddLevel = increaseAdd(baseAdd);
-  }
-
-  if (i === 19) {
-    odAddLevel = increaseAdd(baseAdd);
-    osAddLevel = baseAdd;
-  }
-}
-
-    const odAdd = odAddLevel === -1 ? "" : labelFromLevel(odAddLevel);
-    const osAdd = osAddLevel === -1 ? "" : labelFromLevel(osAddLevel);
-
-    /* ---------------- OUTPUT ---------------- */
-
-    document.getElementById(`r${i}_od`).textContent =
-      `${formatPower(odVal)}${odAdd ? " " + odAdd : ""}`;
-
-    document.getElementById(`r${i}_os`).textContent =
-      `${formatPower(osVal)}${osAdd ? " " + osAdd : ""}`;
-  }
-
-  document.getElementById("od_se").textContent = formatPower(baseOD);
-  document.getElementById("os_se").textContent = formatPower(baseOS);
-}
-
 </script>
+
+
 </body>
 </html>
