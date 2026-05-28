@@ -6,7 +6,7 @@
 
 
 <style>
-:root{--font-sans:Arial,sans-serif;--font-mono:Consolas,monospace;--color-text-primary:#111;--color-text-secondary:#666;--color-text-tertiary:#999;--color-background-primary:#fff;--color-background-secondary:#f7f7f7;--color-background-tertiary:#ececec;--color-border-primary:#999;--color-border-secondary:#ccc;--color-border-tertiary:#e5e5e5;--border-radius-md:8px;--border-radius-lg:14px}
+:root{--font-sans:Arial,sans-serif;--font-mono:Consolas,monospace;--color-text-primary:#111;--color-text-secondary:#666;--color-text-tertiary:#999;--color-background-primary:#fff;--color-background-secondary:#f7f7f7;--color-background-tertiary:#ececec;--color-border-primary:#999;--color-border-secondary:#ccc;--color-border-tertiary:#e5e5e5;--border-radius-md:8px;--border-radius-lg:14px; --navy: #0C447C}
 
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:inherit}
@@ -96,9 +96,61 @@ select.rating{width:58px;padding:4px 6px;font-size:11px;border:1px solid #b0c8e0
 select.rating:focus{outline:none;border-color:#378ADD}
 .total-val{font-size:13px;font-weight:500;color:#185FA5}
 .total-val.empty{color:#9ab3cc;font-weight:400}
+ header {
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    height: 64px;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+    gap: 14px;
+  }
+  header .logo-eye {
+    width: 34px; height: 34px;
+    background: var(--accent);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  header .logo-eye::after {
+    content: '';
+    width: 12px; height: 12px;
+    background: white;
+    border-radius: 50%;
+  }
+
+  header h1 {
+    color: white;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.3;
+  }
+  header h1 span {
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
 </style>
 
+<header style="width:100%;">
+  <h1 style="margin-left:6%">
+    Acuvue Multi-Focal Contact Lens Trial Flow
+    <span>Created by Kiara Optometry</span>
+  </h1>
+</header>
+
+
 <div style="margin-top:100px" class="page">
+
+
+
 
   <div class="step">
     <div class="step-header">
