@@ -1,172 +1,318 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SE Calculator</title>
+  <title>Multifocal Contact Lens</title>
+
 
 
 <style>
-:root{
-  --font-sans:Arial,sans-serif;
-  --font-mono:Consolas,monospace;
-
-  --color-text-primary:#111;
-  --color-text-secondary:#666;
-  --color-text-tertiary:#999;
-
-  --color-background-primary:#fff;
-  --color-background-secondary:#f7f7f7;
-  --color-background-tertiary:#ececec;
-
-  --color-border-primary:#999;
-  --color-border-secondary:#ccc;
-  --color-border-tertiary:#e5e5e5;
-
-  --border-radius-md:8px;
-  --border-radius-lg:14px;
-}
+:root{--font-sans:Arial,sans-serif;--font-mono:Consolas,monospace;--color-text-primary:#111;--color-text-secondary:#666;--color-text-tertiary:#999;--color-background-primary:#fff;--color-background-secondary:#f7f7f7;--color-background-tertiary:#ececec;--color-border-primary:#999;--color-border-secondary:#ccc;--color-border-tertiary:#e5e5e5;--border-radius-md:8px;--border-radius-lg:14px}
 
 
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font-sans);color:var(--color-text-primary);font-size:13px}
-.page{padding:1.5rem 0;max-width:85%; margin:auto}
-.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:16px}
-.eye-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.eye-label{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.eye-dot{width:8px;height:8px;border-radius:50%}
+*{box-sizing:border-box;margin:0;padding:0;font-family:inherit}
+body{font-family:var(--font-sans);color:#0a1628;font-size:13px;background:#f0f4fa}
+.page{padding:1.5rem;max-width:88%;margin:auto}
+
+.step{margin-bottom:8px}
+.step-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.step-num{width:24px;height:24px;border-radius:50%;background:#185FA5;font-size:11px;font-weight:500;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-num.dim{background:#c5d5e8;color:#7a9abf}
+.step-title{font-size:11px;font-weight:500;color:#185FA5;text-transform:uppercase;letter-spacing:.07em}
+.step-title.dim{color:#9ab3cc}
+.step-connector{width:2px;background:#c5d5e8;height:16px;margin-left:11px;margin-bottom:8px;border-radius:1px}
+
+.card{background:#fff;border:1px solid #c5d5e8;border-radius:14px;padding:16px}
+.eye-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.eye-card-od{background:#fff;border:1.5px solid #85B7EB;border-radius:14px;padding:16px}
+.eye-card-os{background:#fff;border:1.5px solid #85B7EB;border-radius:14px;padding:16px}
+.eye-label{font-size:12px;font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.eye-label.od{color:#0C447C}
+.eye-label.os{color:#0C447C}
+.eye-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .eye-dot.od{background:#378ADD}
-.eye-dot.os{background:#1D9E75}
+.eye-dot.os{background:#378ADD}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.field-wrap{display:flex;flex-direction:column;gap:3px}
-.field-label{font-size:11px;color:var(--color-text-tertiary)}
-input{width:100%;padding:7px 9px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px;font-family:var(--font-mono)}
-input:focus{outline:none;border-color:var(--color-border-primary)}
-.se-line{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:0.5px solid var(--color-border-tertiary)}
-.se-val{font-size:15px;font-weight:500;font-family:var(--font-mono)}
-.dom-btn{font-size:11px;padding:3px 10px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:transparent;cursor:pointer;color:var(--color-text-tertiary);display:flex;align-items:center;gap:4px}
-.dom-btn.active-od{background:#E6F1FB;color:#0C447C;border-color:#85B7EB}
+.field-wrap{display:flex;flex-direction:column;gap:4px}
+.field-label{font-size:11px;color:#5a7a99;font-weight:500}
+input{width:100%;padding:7px 10px;border:1px solid #b0c8e0;border-radius:8px;background:#f5f9ff;color:#0a1628;font-size:13px;font-family:var(--font-mono)}
+input::placeholder{font-family:var(--font-sans);color:#9ab3cc}
+input:focus{outline:none;border-color:#378ADD;background:#fff}
+select{width:100%;padding:7px 10px;border:1px solid #b0c8e0;border-radius:8px;background:#f5f9ff;color:#0a1628;font-size:13px;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23378ADD' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+select:focus{outline:none;border-color:#378ADD;background:#fff}
+.divider{height:1px;background:#ddeaf7;margin:12px 0}
+.se-line{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid #ddeaf7}
+.se-label{font-size:12px;color:#5a7a99;display:flex;align-items:baseline;gap:6px;font-weight:500}
+.se-val{font-size:17px;font-weight:500;font-family:var(--font-mono);color:#0C447C}
+.dom-btn{font-size:11px;padding:4px 11px;border-radius:20px;border:1px solid #b0c8e0;background:#f5f9ff;cursor:pointer;color:#5a7a99;line-height:1.4;font-weight:500}
+.dom-btn:hover{background:#ddeaf7;border-color:#85B7EB}
+.dom-btn.active-od{background:#E6F1FB;color:#0C447C;border-color:#378ADD}
 .dom-btn.active-os{background:#E1F5EE;color:#085041;border-color:#5DCAA5}
-.controls-row{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;margin-bottom:16px}
-.field-wrap select{width:100%;padding:7px 9px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px;cursor:pointer}
-.calc-btn{padding:8px 20px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap}
-.calc-btn:hover{background:var(--color-background-secondary)}
+
+.controls-bar{display:flex;grid-template-columns:1fr auto;gap:10px;align-items:end}
+.calc-btn{padding:9px 24px;border-radius:8px;border:none;background:#185FA5;color:#fff;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;letter-spacing:.01em}
+.calc-btn:hover{background:#0C447C}
 .calc-btn:active{transform:scale(0.98)}
-.choice-section{display:none;margin-bottom:16px}
+
+.baseline-card{background:#E6F1FB;border:1.5px solid #85B7EB;border-radius:14px;padding:14px 16px;display:none}
+.baseline-card.visible{display:block}
+.baseline-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.baseline-eye{padding:8px 14px}
+.baseline-eye:first-child{border-right:1px solid #b5d4f4}
+.baseline-eye-label{font-size:11px;font-weight:500;color:#185FA5;margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+.baseline-rx{font-size:15px;font-weight:500;font-family:var(--font-mono);color:#042C53}
+
+.choice-section{display:none}
 .choice-section.visible{display:block}
-.choice-label{font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.choice-btn{padding:12px 16px;border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);cursor:pointer;text-align:left}
-.choice-btn:hover{background:var(--color-background-secondary)}
-.choice-btn.active-near{border:1.5px solid #5DCAA5;background:#E1F5EE}
-.choice-btn.active-far{border:1.5px solid #85B7EB;background:#E6F1FB}
-.choice-icon{font-size:18px;margin-bottom:4px}
-.choice-main{font-size:13px;font-weight:500}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice-btn{padding:14px 16px;border-radius:14px;border:1.5px solid #c5d5e8;background:#fff;cursor:pointer;text-align:left;line-height:1.4}
+.choice-btn:hover{border-color:#85B7EB;background:#f0f7ff}
+.choice-btn.active-near{border-color:#1D9E75;background:#E1F5EE}
+.choice-btn.active-far{border-color:#378ADD;background:#E6F1FB}
+.choice-main{font-size:13px;font-weight:500;margin-bottom:3px}
 .choice-main.near{color:#085041}
-.choice-main.far{color:#0C447C}
-.choice-sub{font-size:11px;color:var(--color-text-tertiary);margin-top:2px}
-.reset-btn{display:none;font-size:12px;color:var(--color-text-secondary);background:none;border:none;cursor:pointer;padding:0;margin-top:8px;text-decoration:underline}
-.reset-btn.visible{display:inline}
-.tbl-wrap{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.choice-main.far{color:#A32D2D}
+.choice-sub{font-size:11px;color:#7a9abf}
+
+.results-section{display:none}
+.results-section.visible{display:block}
+.results-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.results-label{font-size:12px;color:#185FA5;font-weight:500}
+.reset-btn{font-size:12px;color:#378ADD;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline}
+
+.tbl-wrap{border:1px solid #b0c8e0;border-radius:12px;overflow:hidden}
 table{width:100%;border-collapse:collapse;table-layout:fixed}
-th{background:var(--color-background-secondary);font-size:11px;font-weight:500;color:var(--color-text-secondary);padding:8px 10px;text-align:left;border-bottom:0.5px solid var(--color-border-tertiary)}
+th{background:#ddeaf7;font-size:11px;font-weight:500;color:#185FA5;padding:9px 10px;text-align:left;border-bottom:1px solid #b0c8e0;text-transform:uppercase;letter-spacing:.04em}
 th.center,td.center{text-align:center}
-td{padding:8px 10px;font-size:12px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);vertical-align:middle}
+td{padding:8px 10px;font-size:12px;border-bottom:1px solid #e8f0f8;color:#0a1628;vertical-align:middle}
 tr:last-child td{border-bottom:none}
-tr.base-row td{background:var(--color-background-secondary)}
-.row-num{color:var(--color-text-tertiary);font-size:11px}
-.fn-badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500}
-.fn-badge.near{background:#E1F5EE;color:#085041}
-.fn-badge.far{background:#E6F1FB;color:#0C447C}
-.fn-badge.base{background:var(--color-background-tertiary);color:var(--color-text-secondary)}
-.rx-val{font-family:var(--font-mono);font-size:12px}
-.delta-val{font-size:11px;color:var(--color-text);font-family:var(--font-mono)}
-select.rating{width:60px;padding:4px 4px;font-size:11px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer}
+tr:hover td{background:#f5f9ff}
+.row-num{color:#9ab3cc;font-size:11px;font-weight:500}
+.fn-badge{display:inline-block;font-size:10px;padding:3px 8px;border-radius:20px;font-weight:500;line-height:1.5}
+.fn-badge.near{background:#E1F5EE;color:#085041;border:1px solid #5DCAA5}
+.fn-badge.far{background:#FBEAEA;color:#A32D2D;border:1px solid #E3A3A3}
+.rx-val{font-family:var(--font-mono);font-size:12px;color:#042C53;font-weight:500}
+.delta-val{font-size:11px;font-family:var(--font-mono);line-height:1.8}
+select.rating{width:58px;padding:4px 6px;font-size:11px;border:1px solid #b0c8e0;border-radius:6px;background:#f5f9ff;text-align:center;appearance:none;-webkit-appearance:none;color:#0a1628}
+select.rating:focus{outline:none;border-color:#378ADD}
+.total-val{font-size:13px;font-weight:500;color:#185FA5}
+.total-val.empty{color:#9ab3cc;font-weight:400}
 </style>
 
-<div class="page">
+<div style="margin-top:100px" class="page">
 
-<div class="eye-grid">
-  <div class="card">
-    <div class="eye-label"><span class="eye-dot od"></span> Right eye (OD)</div>
-    <div class="field-row">
-      <div class="field-wrap"><span class="field-label">Sphere</span><input id="od_s" type="text" placeholder="+0.00"></div>
-      <div class="field-wrap"><span class="field-label">Cylinder</span><input id="od_c" type="text" placeholder="-0.00"></div>
+  <div class="step">
+    <div class="step-header">
+
+      <div class="step-num">1</div>
+      <span class="step-title">Enter prescription</span>
     </div>
-    <div class="se-line">
-      <span style="color:var(--color-text-secondary);font-size:12px">SE <span class="se-val" id="od_se">—</span></span>
-      <button class="dom-btn" id="dom_od" onclick="setDominant('od')"><i class="ti ti-eye" aria-hidden="true" style="font-size:11px"></i>Dominant</button>
+
+
+    <div style="margin:10px 0" class="controls-bar">
+
+      <div style="width:100%" class="field-wrap">
+        <select id="mode"><option value="spec">RX from spectacle</option><option value="cl">RX from contact lens</option></select>
+      </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+    <div class="eye-grid" style="margin-bottom:12px">
+
+
+      <div class="eye-card-od">
+        <div class="eye-label od"><span class="eye-dot od"></span>Right eye</div>
+        <div class="field-row">
+          <div class="field-wrap"><span class="field-label">Sphere</span><input id="od_s" type="text" placeholder="0.00"></div>
+          <div class="field-wrap"><span class="field-label">Cylinder</span><input id="od_c" type="text" placeholder="0.00"></div>
+        </div>
+        <div class="divider"></div>
+        <div class="field-wrap"><span class="field-label">Add</span>
+          <select id="od_add">
+            <option value="low">Low — +0.50 to +1.25</option>
+            <option value="mid">Mid — +1.50 to +2.25</option>
+            <option value="high">High — +2.50 and above</option>
+          </select>
+        </div>
+        <div class="se-line">
+          <div class="se-label">SE <span class="se-val" id="od_se">—</span></div>
+          <button class="dom-btn" id="dom_od" onclick="setDominant('od')">Dominant</button>
+        </div>
+      </div>
+      <div class="eye-card-os">
+        <div class="eye-label os"><span class="eye-dot os"></span>Left eye</div>
+        <div class="field-row">
+          <div class="field-wrap"><span class="field-label">Sphere</span><input id="os_s" type="text" placeholder="0.00"></div>
+          <div class="field-wrap"><span class="field-label">Cylinder</span><input id="os_c" type="text" placeholder="0.00"></div>
+        </div>
+        <div class="divider"></div>
+        <div class="field-wrap"><span class="field-label">Add</span>
+          <select id="os_add">
+            <option value="low">Low — +0.50 to +1.25</option>
+            <option value="mid">Mid — +1.50 to +2.25</option>
+            <option value="high">High — +2.50 and above</option>
+          </select>
+        </div>
+        <div class="se-line">
+          <div class="se-label">SE <span class="se-val" id="os_se">—</span></div>
+          <button class="dom-btn" id="dom_os" onclick="setDominant('os')">Dominant</button>
+        </div>
+      </div>
+    </div>
+    <div class="controls-bar">
+
+      <button style="width:100%" class="calc-btn" onclick="calculateSE()">Calculate</button>
     </div>
   </div>
-  <div class="card">
-    <div class="eye-label"><span class="eye-dot os"></span> Left eye (OS)</div>
-    <div class="field-row">
-      <div class="field-wrap"><span class="field-label">Sphere</span><input id="os_s" type="text" placeholder="+0.00"></div>
-      <div class="field-wrap"><span class="field-label">Cylinder</span><input id="os_c" type="text" placeholder="-0.00"></div>
+
+  <div class="step-connector"></div>
+
+<div class="step">
+  <div class="step-header">
+    <div class="step-num dim" id="step2num">2</div>
+    <span class="step-title dim" id="step2title">Baseline result</span>
+  </div>
+
+  <div class="baseline-card" id="baselineCard">
+
+    <div class="baseline-grid" style="grid-template-columns:1fr 1fr auto auto auto;align-items:center">
+
+  <div class="baseline-eye">
+    <div class="baseline-eye-label">Right eye</div>
+    <div class="baseline-rx" id="base_od">—</div>
+  </div>
+
+  <div class="baseline-eye" style="border-right:1px solid #b5d4f4">
+    <div class="baseline-eye-label">Left eye</div>
+    <div class="baseline-rx" id="base_os">—</div>
+  </div>
+
+  <div style="padding:8px 10px;display:flex;flex-direction:column;gap:4px;align-items:center">
+    <span style="font-size:15px;color:#185FA5;font-weight:500">Far</span>
+    <select class="rating" id="baseline_far" onchange="updateBaselineTotal()">
+      <option value="na">—</option>
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+      <option>6</option>
+      <option>7</option>
+      <option>8</option>
+      <option>9</option>
+    </select>
+  </div>
+
+  <div style="padding:8px 10px;display:flex;flex-direction:column;gap:4px;align-items:center">
+    <span style="font-size:15px;color:#185FA5;font-weight:500">Near</span>
+    <select class="rating" id="baseline_near" onchange="updateBaselineTotal()">
+      <option value="na">—</option>
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+      <option>6</option>
+      <option>7</option>
+      <option>8</option>
+      <option>9</option>
+    </select>
+  </div>
+
+  <div style="padding:8px 10px;display:flex;flex-direction:column;gap:4px;align-items:center">
+    <span style="font-size:15px;color:#185FA5;font-weight:500; margin-bottom:3px">Total</span>
+    <span style="margin-bottom:5px" class="total-val empty" id="baseline_total">—</span>
+  </div>
+
     </div>
-    <div class="se-line">
-      <span style="color:var(--color-text-secondary);font-size:12px">SE <span class="se-val" id="os_se">—</span></span>
-      <button class="dom-btn" id="dom_os" onclick="setDominant('os')"><i class="ti ti-eye" aria-hidden="true" style="font-size:11px"></i>Dominant</button>
+
+  </div>
+</div>
+
+  <div class="step-connector"></div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num dim" id="step3num">3</div>
+      <span class="step-title dim" id="step3title">How is the patient doing?</span>
+    </div>
+    <div class="choice-section" id="choiceSection">
+      <div class="choice-grid">
+        <button class="choice-btn" id="btn_near" onclick="showRows('near')">
+          <div class="choice-main near">Improve near</div>
+          <div class="choice-sub">Near vision is insufficient</div>
+        </button>
+        <button class="choice-btn" id="btn_far" onclick="showRows('far')">
+          <div class="choice-main far">Improve far</div>
+          <div class="choice-sub">Distance vision is blurred</div>
+        </button>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="controls-row">
-  <div class="field-wrap"><span class="field-label">Rx mode</span>
-    <select id="mode"><option value="spec">Spectacle</option><option value="cl">Contact lens</option></select>
+  <div class="step-connector"></div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num dim" id="step4num">4</div>
+      <span class="step-title dim" id="step4title">Trial options</span>
+    </div>
+    <div class="results-section" id="resultsSection">
+      <div class="results-toolbar">
+        <span class="results-label" id="resultsLabel"></span>
+        <button class="reset-btn" id="resetBtn" onclick="resetChoice()" style="display:none">Show all rows</button>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:30px">#</th>
+              <th style="width:150px">Purpose</th>
+              <th style="width:120px">Right RX</th>
+              <th style="width:120px">Left RX</th>
+              <th>Delta</th>
+              <th class="center" style="width:80px">Far</th>
+              <th class="center" style="width:80px">Near</th>
+              <th class="center" style="width:80px">Total</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
-  <div class="field-wrap"><span class="field-label">Current add</span>
-    <select id="add"><option value="low">Low — 0 to +1.25</option><option value="mid">Mid — +1.50 to +2.25</option><option value="high">High — +2.50 and above</option></select>
-  </div>
-  <button class="calc-btn" onclick="calculateSE()"><i class="ti ti-calculator" aria-hidden="true" style="font-size:13px;margin-right:5px"></i>Calculate</button>
-</div>
-
-<div class="choice-section" id="choiceSection">
-  <div class="choice-label">How is the patient doing?</div>
-  <div class="choice-grid">
-    <button class="choice-btn" id="btn_near" onclick="showRows('near')">
-      <div class="choice-icon"><i class="ti ti-zoom-in" aria-hidden="true" style="color:#1D9E75"></i></div>
-      <div class="choice-main near">Improve near</div>
-      <div class="choice-sub">Near vision is insufficient</div>
-    </button>
-    <button class="choice-btn" id="btn_far" onclick="showRows('far')">
-      <div class="choice-icon"><i class="ti ti-zoom-out" aria-hidden="true" style="color:#378ADD"></i></div>
-      <div class="choice-main far">Improve far</div>
-      <div class="choice-sub">Distance vision is blurred</div>
-    </button>
-  </div>
-  <button class="reset-btn" id="resetBtn" onclick="resetChoice()"><i class="ti ti-rotate-clockwise" style="font-size:11px;margin-right:3px"></i>Show all rows</button>
-</div>
-
-<div class="tbl-wrap">
-<table>
-  <thead>
-    <tr>
-      <th style="width:32px">#</th>
-      <th style="width:100px"></th>
-      <th style="width:92px">Right RX</th>
-      <th style="width:92px">Left RX</th>
-      <th>Delta</th>
-      <th class="center" style="width:68px">Far</th>
-      <th class="center" style="width:68px">Near</th>
-    </tr>
-  </thead>
-  <tbody id="tableBody"></tbody>
-</table>
-</div>
 
 </div>
+<div style="margin-bottom:200px"></div>
 
 <script>
-const rowDefs=[
-  {id:0,  fn:"Base",  group:"base", delta:"BASE +0.00 // +0.00",           od:0,    os:0,    addOD:0,  addOS:0,  domHide:null},
-  {id:1,  fn:"near",  group:"near", delta:"NEAR:1 +0.25 // +0.25",           od:.25,  os:.25,  addOD:0,  addOS:0,  domHide:null},
-    {id:2, fn:"near",  group:"near", delta:"NEAR:2 +0.00 +add // +0.00",      od:0,    os:0,    addOD:+1, addOS:0,  domHide:"od"},
-  {id:3, fn:"near",  group:"near", delta:"NEAR:2 +0.00 // +0.00 +add",      od:0,    os:0,    addOD:0,  addOS:+1, domHide:"os"},
-{id:4, fn:"near",  group:"near", delta:"NEAR:3 +0.00 +add // +0.00 +add", od:0,    os:0,    addOD:+1, addOS:+1, domHide:null},
-  {id:5, fn:"far",   group:"far",  delta:"FAR:1 -0.25 // -0.25",           od:-.25, os:-.25, addOD:0,  addOS:0,  domHide:null},
-  {id:6, fn:"far",   group:"far",  delta:"FAR:2 -0.00 -add // -0.00",      od:0,    os:0,    addOD:-1, addOS:0,  domHide:"os"},
-  {id:7, fn:"far",   group:"far",  delta:"FAR:2 -0.00 // -0.00 -add",      od:0,    os:0,    addOD:0,  addOS:-1, domHide:"od"},
-  {id:8, fn:"far",  group:"far", delta:"FAR:3 +0.25 -add // +0.25 -add",      od:+.25,    os:+.25,    addOD:-1, addOS:-1,  domHide:"null"},
+const green='color:#0F6E56;font-weight:500';
+const red='color:#A32D2D;font-weight:500';
+const grey='color:#7a9abf';
 
+const rowDefs=[
+  {id:1,fn:"near",group:"near",delta:`Near 1:<br><span style="${green}">+0.25</span> // <span style="${green}">+0.25</span>`,od:.25,os:.25,addOD:0,addOS:0,domHide:null},
+
+  {id:2,fn:"far",group:"far",delta:`Far 1:<br><span style="${red}">−0.25</span> // <span style="${red}">−0.25</span>`,od:-.25,os:-.25,addOD:0,addOS:0,domHide:null},
+
+  {id:3,fn:"near",group:"near",delta:`Near 2 LE Dom:<br><span style="${grey}">+0.00</span> <span style="${green}">+add</span> // <span style="${grey}">+0.00</span>`,od:0,os:0,addOD:+1,addOS:0,domHide:"od"},
+
+  {id:4,fn:"far",group:"far",delta:`Far 2 RE Dom:<br><span style="${grey}">+0.00</span> <span style="${red}">−add</span> // <span style="${grey}">+0.00</span>`,od:0,os:0,addOD:-1,addOS:0,domHide:"os"},
+
+  {id:5,fn:"near",group:"near",delta:`Near 2 RE Dom:<br><span style="${grey}">+0.00</span> // <span style="${grey}">+0.00</span> <span style="${green}">+add</span>`,od:0,os:0,addOD:0,addOS:+1,domHide:"os"},
+
+  {id:6,fn:"far",group:"far",delta:`Far 2 LE Dom:<br><span style="${grey}">+0.00</span> // <span style="${grey}">+0.00</span> <span style="${red}">−add</span>`,od:0,os:0,addOD:0,addOS:-1,domHide:"od"},
+
+  {id:7,fn:"near",group:"near",delta:`Near 3:<br><span style="${grey}">+0.00</span> <span style="${green}">+add</span> // <span style="${grey}">+0.00</span> <span style="${green}">+add</span>`,od:0,os:0,addOD:+1,addOS:+1,domHide:null},
+
+  {id:8,fn:"far",group:"far",delta:`Far 3:<br><span style="${green}">+0.25</span> <span style="${red}">−add</span> // <span style="${green}">+0.25</span> <span style="${red}">−add</span>`,od:+.25,os:+.25,addOD:-1,addOS:-1,domHide:null},
 ];
 
 const ratingOpts='<option value="na">—</option>'+[1,2,3,4,5,6,7,8,9].map(n=>`<option>${n}</option>`).join('');
@@ -175,15 +321,72 @@ const tbody=document.getElementById('tableBody');
 rowDefs.forEach(r=>{
   const tr=document.createElement('tr');
   tr.id=`row_${r.id}`;
-  if(r.group==='base') tr.className='base-row';
-  const bc=r.group==='base'?'base':r.fn==='near'?'near':'far';
-  const bl=r.group==='base'?'Baseline':r.fn==='near'?'Improve near':'Improve far';
-  tr.innerHTML=`<td class="row-num center">${r.id}</td><td><span class="fn-badge ${bc}">${bl}</span></td><td><span class="rx-val" id="r${r.id}_od">—</span></td><td><span class="rx-val" id="r${r.id}_os">—</span></td><td><span class="delta-val">${r.delta}</span></td><td class="center"><select class="rating" id="r${r.id}_far">${ratingOpts}</select></td><td class="center"><select class="rating" id="r${r.id}_near">${ratingOpts}</select></td>`;
+  const bc=r.fn==='near'?'near':'far';
+  const bl=r.fn==='near'?'Improve near':'Improve far';
+  tr.innerHTML=`
+    <td class="row-num center">${r.id}</td>
+    <td><span class="fn-badge ${bc}">${bl}</span></td>
+    <td><span class="rx-val" id="r${r.id}_od">—</span></td>
+    <td><span class="rx-val" id="r${r.id}_os">—</span></td>
+    <td><span class="delta-val">${r.delta}</span></td>
+    <td class="center"><select class="rating" id="r${r.id}_far" onchange="updateTotal(${r.id})">${ratingOpts}</select></td>
+    <td class="center"><select class="rating" id="r${r.id}_near" onchange="updateTotal(${r.id})">${ratingOpts}</select></td>
+    <td class="center"><span class="total-val empty" id="r${r.id}_total">—</span></td>`;
   tbody.appendChild(tr);
 });
 
-let dominantEye=null;
-let activeGroup=null;
+function updateTotal(id){
+  const f=document.getElementById(`r${id}_far`).value;
+  const n=document.getElementById(`r${id}_near`).value;
+  const el=document.getElementById(`r${id}_total`);
+  const fv=f==='na'?null:parseInt(f);
+  const nv=n==='na'?null:parseInt(n);
+  if(fv===null&&nv===null){el.textContent='—';el.className='total-val empty';}
+  else{el.textContent=(fv||0)+(nv||0);el.className='total-val';}
+}
+function updateBaselineTotal(){
+  const f=document.getElementById('baseline_far').value;
+  const n=document.getElementById('baseline_near').value;
+  const el=document.getElementById('baseline_total');
+
+  const fv=f==='na'?null:parseInt(f);
+  const nv=n==='na'?null:parseInt(n);
+
+  if(fv===null&&nv===null){
+    el.textContent='—';
+    el.className='total-val empty';
+  }else{
+    el.textContent=(fv||0)+(nv||0);
+    el.className='total-val';
+  }
+}
+
+function snapInput(el){
+  const raw=el.value.trim();
+  if(raw===''||raw==='+'||raw==='-') return;
+  const num=parseFloat(raw);
+  if(isNaN(num)){el.value='';return;}
+  const r=Math.round(num*4)/4;
+  el.value=(r>=0?'+':'')+r.toFixed(2);
+}
+
+['od_s','od_c','os_s','os_c'].forEach(id=>{
+  const el=document.getElementById(id);
+  el.addEventListener('blur',()=>snapInput(el));
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key==='Tab') snapInput(el);});
+});
+
+function activateStep(n){
+  [2,3,4].forEach(i=>{
+    const dim=i>n;
+    const numEl=document.getElementById(`step${i}num`);
+    const titleEl=document.getElementById(`step${i}title`);
+    numEl.className=dim?'step-num dim':'step-num';
+    titleEl.className=dim?'step-title dim':'step-title';
+  });
+}
+
+let dominantEye=null,activeGroup=null;
 const BVD=0.012;
 
 function setDominant(eye){
@@ -196,16 +399,16 @@ function setDominant(eye){
 function fmt(v){return(v>=0?'+':'')+v.toFixed(2)}
 function roundQ(v){return Math.round(v*4)/4}
 function vc(F,d){return F/(1-d*F)}
-function clean(v){let n=parseFloat(String(v).replace('+',''));return isNaN(n)?0:n}
+function clean(v){const n=parseFloat(String(v).replace('+',''));return isNaN(n)?0:n;}
 
 function processEye(s,c,mode){
-  let flat=mode==='cl'?s:vc(s,BVD);
-  let steep=mode==='cl'?s+c:vc(s+c,BVD);
+  const flat=mode==='cl'?s:vc(s,BVD);
+  const steep=mode==='cl'?s+c:vc(s+c,BVD);
   return roundQ((flat+steep)/2);
 }
 
-function getAddLevel(){
-  const v=document.getElementById('add').value;
+function getAddLevel(id){
+  const v=document.getElementById(id).value;
   return v==='high'?2:v==='mid'?1:0;
 }
 
@@ -221,9 +424,9 @@ function applyAddDelta(base,delta){
 function applyVisibility(){
   rowDefs.forEach(r=>{
     const tr=document.getElementById(`row_${r.id}`);
-    const hiddenByGroup = activeGroup!==null && r.group!=='base' && r.group!==activeGroup;
-    const hiddenByDom   = dominantEye!==null && r.domHide===dominantEye;
-    tr.style.display=(hiddenByGroup||hiddenByDom)?'none':'';
+    const hg=activeGroup!==null&&r.group!==activeGroup;
+    const hd=dominantEye!==null&&r.domHide===dominantEye;
+    tr.style.display=(hg||hd)?'none':'';
   });
 }
 
@@ -231,27 +434,33 @@ function calculateSE(){
   const mode=document.getElementById('mode').value;
   const baseOD=processEye(clean(document.getElementById('od_s').value),clean(document.getElementById('od_c').value),mode);
   const baseOS=processEye(clean(document.getElementById('os_s').value),clean(document.getElementById('os_c').value),mode);
-  const baseAdd=getAddLevel();
+  const addOD=getAddLevel('od_add');
+  const addOS=getAddLevel('os_add');
 
   document.getElementById('od_se').textContent=fmt(baseOD);
   document.getElementById('os_se').textContent=fmt(baseOS);
+  document.getElementById('base_od').textContent=fmt(baseOD)+' '+labelFromLevel(addOD);
+  document.getElementById('base_os').textContent=fmt(baseOS)+' '+labelFromLevel(addOS);
 
   rowDefs.forEach(r=>{
-    const odVal=baseOD+r.od;
-    const osVal=baseOS+r.os;
-    const odAddLevel=applyAddDelta(baseAdd,r.addOD);
-    const osAddLevel=applyAddDelta(baseAdd,r.addOS);
+    const odAddLevel=applyAddDelta(addOD,r.addOD);
+    const osAddLevel=applyAddDelta(addOS,r.addOS);
     const odAdd=odAddLevel===-1?'':labelFromLevel(odAddLevel);
     const osAdd=osAddLevel===-1?'':labelFromLevel(osAddLevel);
-    document.getElementById(`r${r.id}_od`).textContent=`${fmt(odVal)}${odAdd?' '+odAdd:''}`;
-    document.getElementById(`r${r.id}_os`).textContent=`${fmt(osVal)}${osAdd?' '+osAdd:''}`;
+    document.getElementById(`r${r.id}_od`).textContent=`${fmt(baseOD+r.od)}${odAdd?' '+odAdd:''}`;
+    document.getElementById(`r${r.id}_os`).textContent=`${fmt(baseOS+r.os)}${osAdd?' '+osAdd:''}`;
   });
 
+  document.getElementById('baselineCard').classList.add('visible');
   document.getElementById('choiceSection').classList.add('visible');
+  document.getElementById('resultsSection').classList.add('visible');
+
+  activateStep(4);
   activeGroup=null;
   document.getElementById('btn_near').className='choice-btn';
   document.getElementById('btn_far').className='choice-btn';
-  document.getElementById('resetBtn').classList.remove('visible');
+  document.getElementById('resetBtn').style.display='none';
+  document.getElementById('resultsLabel').textContent='All trial options';
   applyVisibility();
 }
 
@@ -259,7 +468,8 @@ function showRows(group){
   activeGroup=group;
   document.getElementById('btn_near').className='choice-btn'+(group==='near'?' active-near':'');
   document.getElementById('btn_far').className='choice-btn'+(group==='far'?' active-far':'');
-  document.getElementById('resetBtn').classList.add('visible');
+  document.getElementById('resetBtn').style.display='inline';
+  document.getElementById('resultsLabel').textContent=group==='near'?'Showing: improve near':'Showing: improve far';
   applyVisibility();
 }
 
@@ -267,10 +477,13 @@ function resetChoice(){
   activeGroup=null;
   document.getElementById('btn_near').className='choice-btn';
   document.getElementById('btn_far').className='choice-btn';
-  document.getElementById('resetBtn').classList.remove('visible');
+  document.getElementById('resetBtn').style.display='none';
+  document.getElementById('resultsLabel').textContent='All trial options';
   applyVisibility();
 }
 </script>
+
+
 
 
 </body>
