@@ -6,7 +6,7 @@
 
 
 <style>
-:root{--font-sans:Arial,sans-serif;--font-mono:Consolas,monospace;--color-text-primary:#111;--color-text-secondary:#666;--color-text-tertiary:#999;--color-background-primary:#fff;--color-background-secondary:#f7f7f7;--color-background-tertiary:#ececec;--color-border-primary:#999;--color-border-secondary:#ccc;--color-border-tertiary:#e5e5e5;--border-radius-md:8px;--border-radius-lg:14px; --navy: #0C447C}
+:root{--font-sans:Arial,sans-serif;--font-mono:Consolas,monospace;--color-text-primary:#111;--color-text-secondary:#666;--color-text-tertiary:#999;--color-background-primary:#fff;--color-background-secondary:#f7f7f7;--color-background-tertiary:#ececec;--color-border-primary:#999;--color-border-secondary:#ccc;--color-border-tertiary:#e5e5e5;--border-radius-md:8px;--border-radius-lg:14px; --navy: #464D7D}
 
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:inherit}
@@ -15,9 +15,9 @@ body{font-family:var(--font-sans);color:#0a1628;font-size:13px;background:#f0f4f
 
 .step{margin-bottom:8px}
 .step-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.step-num{width:24px;height:24px;border-radius:50%;background:#185FA5;font-size:11px;font-weight:500;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-num{width:24px;height:24px;border-radius:50%;background:#464D7D;font-size:11px;font-weight:500;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .step-num.dim{background:#c5d5e8;color:#7a9abf}
-.step-title{font-size:11px;font-weight:500;color:#185FA5;text-transform:uppercase;letter-spacing:.07em}
+.step-title{font-size:11px;font-weight:500;color:#464D7D;text-transform:uppercase;letter-spacing:.07em}
 .step-title.dim{color:#9ab3cc}
 .step-connector{width:2px;background:#c5d5e8;height:16px;margin-left:11px;margin-bottom:8px;border-radius:1px}
 
@@ -147,9 +147,11 @@ select.rating:focus{outline:none;border-color:#378ADD}
 </header>
 
 
-<div style="margin-top:100px" class="page">
+<div style="margin-top:80px" class="page">
 
-
+<div class="step" style="margin-bottom:20px">
+<img style="width:100%; border:1.5px solid #85B7EB; border-radius:14px" src="https://raw.githubusercontent.com/sp-rx/CL_MF/refs/heads/main/abberations.png" alt="">
+</div>
 
 
   <div class="step">
@@ -220,7 +222,7 @@ select.rating:focus{outline:none;border-color:#378ADD}
     </div>
     <div class="controls-bar">
 
-      <button style="width:100%" class="calc-btn" onclick="calculateSE()">Calculate</button>
+      <button style="width:100%; background-color:#464D7D" class="calc-btn" onclick="calculateSE()">Calculate</button>
     </div>
   </div>
 
